@@ -21,7 +21,7 @@ architectures:
   - build-on: [ amd64, arm64 ]
 
 plugs:
-  config-files:
+  config-ludo:
     interface: personal-files
     write:
     - $HOME/.ludo
@@ -40,7 +40,7 @@ apps:
       - audio-playback
       - joystick
       - home
-      - config-files
+      - config-ludo
       - removable-media
 
 parts:
