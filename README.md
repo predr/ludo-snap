@@ -17,8 +17,7 @@ Get it from the Snap Store or install in terminal.
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/ludo)
 
-	snap install factorio-headless
-
+	snap install ludo
 ## Links
 
 - [Ludo Website](https://ludo.libretro.com)
