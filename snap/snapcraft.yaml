@@ -20,6 +20,12 @@ confinement: strict
 architectures: 
   - build-on: [ amd64, arm64 ]
 
+plugs:
+  ludo-files:
+    interface: personal-files
+    write:
+    - $HOME/.ludo
+
 apps:
   ludo:
     command-chain:
@@ -34,6 +40,7 @@ apps:
       - audio-playback
       - joystick
       - home
+      - ludo-files
       - removable-media
 
 parts:
