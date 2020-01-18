@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Setup environment and execute
+#
+
+# Set working dir to /data because assets, database and cores
+# are searched in current path unless edited in ./ludo/settings.toml
+cd $SNAP/data
+
+# Execute
+exec "$@"

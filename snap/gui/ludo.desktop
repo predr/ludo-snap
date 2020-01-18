@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Ludo
+GenericName=Libretro Frontend
+Type=Application
+Comment=Multi-Engine Platform
+Icon=${SNAP}/meta/gui/icon.svg
+Terminal=false
+StartupNotify=false
+Keywords=game;libretro;emulator;
+Categories=Game;Emulator;
+Exec=ludo

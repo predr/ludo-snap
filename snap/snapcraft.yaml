@@ -1,0 +1,80 @@
+#
+# Snapcraft
+# https://snapcraft.io/docs
+#
+name: ludo
+summary: Ludo is a work in progress libretro frontend
+description: |
+  Ludo's user interface is distraction free and configuration is always optional.
+
+  Scan your games and browse your collection categorized by system with playlists showing in-game screenshots.
+
+  A contextual menu gives you access to actions and quick save / quick load anytime.
+
+  We chose the best emulators for the job, configured with sane defaults guaranteeing a balance of speed and accuracy.
+
+adopt-info: latest
+base: core18
+grade: stable
+confinement: strict
+architectures: 
+  - build-on: [ amd64, arm64 ]
+
+apps:
+  ludo:
+    command-chain:
+      - bin/environment
+    command: bin/ludo
+    environment:
+      LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
+    plugs:
+      - x11
+      - opengl
+      - wayland
+      - audio-playback
+      - joystick
+      - home
+      - removable-media
+
+parts:
+  latest:
+    plugin: nil
+    # There are nicer ways to pull releases but they require updating this file. This way
+    # new release can be built using only web interface and correct arhitecture is used.
+    override-build: |
+      snapcraftctl build
+      VERSION=$(curl --silent https://api.github.com/repos/libretro/ludo/releases/latest | jq --raw-output .tag_name | cut -c 2-)
+      snapcraftctl set-version "$VERSION"
+      case $SNAPCRAFT_ARCH_TRIPLET in
+        x86_64-linux-gnu)  ASSET="Ludo-Linux-x86_64-$VERSION.tar.gz";;
+        aarch64-linux-gnu) ASSET="Ludo-Linux-arm-$VERSION.tar.gz";;
+        *) echo "FATAL: UNKNOWN PLATFORM!"; exit 1;;
+      esac
+      curl --silent --location --output "$SNAPCRAFT_PART_INSTALL/$ASSET" "https://github.com/libretro/ludo/releases/download/v$VERSION/$ASSET"
+      tar --extract --strip-components=1 --file="$SNAPCRAFT_PART_INSTALL/$ASSET" --directory="$SNAPCRAFT_PART_INSTALL"
+      rm -f "$SNAPCRAFT_PART_INSTALL/$ASSET"
+    
+    # Apt packages needed for override-build
+    build-packages:
+      - curl
+      - jq
+      - tar
+
+    # Apt packages needed for application runtime.
+    stage-packages:
+      - libopenal1
+      - libpulse0
+      - libglu1-mesa
+      - libgl1
+
+    organize:
+      'ludo' : bin/
+      'cores' : data/cores/
+      'assets' : data/assets/
+      'database' : data/database/
+
+  scripts:
+    plugin: dump
+    source: scripts
+    organize:
+      environment: bin/environment
