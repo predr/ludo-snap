@@ -2,6 +2,7 @@
 #
 # Setup environment and execute
 #
+import-ludo-settings
 
 # Set working dir to /data because assets, database and cores
 # are searched in current path unless edited in ./ludo/settings.toml

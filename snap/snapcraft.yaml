@@ -24,7 +24,7 @@ architectures:
 plugs:
   config-ludo:
     interface: personal-files
-    write:
+    read:
     - $HOME/.ludo
 
 apps:
@@ -84,3 +84,4 @@ parts:
     source: scripts
     organize:
       environment: bin/environment
+      import-ludo-settings: bin/import-ludo-settings

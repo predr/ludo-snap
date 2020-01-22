@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Import settings from other releases into snap directory when .ludo exists
+# in user home directory and .ludo doesn't exist in snap directory
+#
+if [[ -d "/home/$USER/.ludo" ]]; then
+    if [[ ! -d "$SNAP_USER_DATA/.ludo" ]]; then
+        cp --recursive "/home/$USER/.ludo" "$SNAP_USER_DATA"
+        echo "Imported Ludo settings from /home/$USER/.ludo"
+    fi
+fi
