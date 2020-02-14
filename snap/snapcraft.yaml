@@ -72,6 +72,7 @@ parts:
       - libpulse0
       - libglu1-mesa
       - libgl1
+      - xorg-dev
 
     organize:
       'ludo' : bin/
