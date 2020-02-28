@@ -2,6 +2,11 @@
 #
 # Setup environment and execute
 #
+
+# Change $HOME to symlinked current revision
+HOME="$(dirname "$HOME")/current"
+
+# Import settings from other installs
 import-ludo-settings
 
 # Set working dir to /data because assets, database and cores

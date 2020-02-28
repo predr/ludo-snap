@@ -6,6 +6,8 @@
 if [[ -d "/home/$USER/.ludo" ]]; then
     if [[ ! -d "$SNAP_USER_DATA/.ludo" ]]; then
         cp --recursive "/home/$USER/.ludo" "$SNAP_USER_DATA"
-        echo "Imported Ludo settings from /home/$USER/.ludo"
+        sed --in-place "s|/home/$USER/.ludo|$HOME/.ludo|g" "$SNAP_USER_DATA/.ludo/settings.toml"
+        sed --in-place "s|FB Alpha|FBNeo|g" "$SNAP_USER_DATA/.ludo/settings.toml"
+        echo "Imported settings from /home/$USER/.ludo"
     fi
 fi
