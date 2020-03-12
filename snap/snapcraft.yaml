@@ -29,9 +29,7 @@ plugs:
 
 apps:
   ludo:
-    command-chain:
-      - bin/environment
-    command: bin/ludo
+    command: bin/environment ludo
     environment:
       LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
     plugs:
