@@ -34,14 +34,19 @@ apps:
       DISABLE_WAYLAND: 1
       LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
     plugs:
+      - desktop
+      - desktop-legacy
+      - wayland
+      - unity7
       - x11
       - opengl
       - network
+      - network-bind
       - audio-playback
       - joystick
-      - home
-      - config-ludo
       - removable-media
+      - config-ludo
+      - home
 
 parts:
   latest:
