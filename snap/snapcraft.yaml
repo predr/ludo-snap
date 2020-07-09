@@ -2,8 +2,10 @@
 # to building from source with same versions of cores as released in assets.
 # https://snapcraft.io/docs/snapcraft-yaml-reference
 name: ludo
-summary: A minimalist frontend for Libretro emulators
+summary: A minimalist front-end for Libretro emulators
 description: |
+  **Focus on playing**
+
   Ludo's user interface is distraction free and configuration is always
   optional.
 
@@ -88,11 +90,7 @@ parts:
       database: data/database/
 
   wrapper:
-    source: .
+    source: scripts
     plugin: dump
-    filesets:
-      wrapper:
-        - wrapper
-
-    stage:
-      - $wrapper
+    organize:
+      wrapper: bin/wrapper
