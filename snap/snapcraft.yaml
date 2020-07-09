@@ -1,17 +1,20 @@
-#
-# Snapcraft
-# https://snapcraft.io/docs
-#
+# Build snap from latest released assets on Github. When #108 is fixed switch
+# to building from source with same versions of cores as released in assets.
+# https://snapcraft.io/docs/snapcraft-yaml-reference
 name: ludo
-summary: Ludo is a work in progress libretro frontend
+summary: A minimalist frontend for Libretro emulators
 description: |
-  Ludo's user interface is distraction free and configuration is always optional.
+  Ludo's user interface is distraction free and configuration is always
+  optional.
 
-  Scan your games and browse your collection categorized by system with playlists showing in-game screenshots.
+  Scan your games and browse your collection categorized by system with
+  playlists showing in-game screenshots.
 
-  A contextual menu gives you access to actions and quick save / quick load anytime.
+  A contextual menu gives you access to actions and quick save / quick load
+  anytime.
 
-  We chose the best emulators for the job, configured with sane defaults guaranteeing a balance of speed and accuracy.
+  We chose the best emulators for the job, configured with sane defaults
+  guaranteeing a balance of speed and accuracy.
 
 adopt-info: latest
 base: core18
@@ -29,10 +32,9 @@ plugs:
 
 apps:
   ludo:
-    command: bin/environment ludo
+    command: wrapper ludo
     environment:
       DISABLE_WAYLAND: 1
-      LD_LIBRARY_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
     plugs:
       - desktop
       - desktop-legacy
@@ -51,43 +53,46 @@ apps:
 parts:
   latest:
     plugin: nil
-    # There are nicer ways to pull releases but they require updating this file. This way
-    # new release can be built using only web interface and correct arhitecture is used.
     override-build: |
       snapcraftctl build
-      VERSION=$(curl --silent https://api.github.com/repos/libretro/ludo/releases/latest | jq --raw-output .tag_name | cut -c 2-)
+      URL="https://api.github.com/repos/libretro/ludo/releases/latest"
+      VERSION=$(curl --silent "$URL" | jq --raw-output .tag_name | cut -c 2-)
       snapcraftctl set-version "$VERSION"
       case $SNAPCRAFT_ARCH_TRIPLET in
         x86_64-linux-gnu)  ASSET="Ludo-Linux-x86_64-$VERSION.tar.gz";;
         aarch64-linux-gnu) ASSET="Ludo-Linux-arm-$VERSION.tar.gz";;
         *) echo "FATAL: UNKNOWN PLATFORM!"; exit 1;;
       esac
-      curl --silent --location --output "$SNAPCRAFT_PART_INSTALL/$ASSET" "https://github.com/libretro/ludo/releases/download/v$VERSION/$ASSET"
-      tar --extract --strip-components=1 --file="$SNAPCRAFT_PART_INSTALL/$ASSET" --directory="$SNAPCRAFT_PART_INSTALL"
+      curl --silent --location --output "$SNAPCRAFT_PART_INSTALL/$ASSET" \
+        "https://github.com/libretro/ludo/releases/download/v$VERSION/$ASSET"
+      tar --extract --strip-components=1 \
+        --file="$SNAPCRAFT_PART_INSTALL/$ASSET" \
+        --directory="$SNAPCRAFT_PART_INSTALL"
       rm -f "$SNAPCRAFT_PART_INSTALL/$ASSET"
-    
-    # Apt packages needed for override-build
+
     build-packages:
       - curl
-      - jq
       - tar
+      - jq
 
-    # Apt packages needed for application runtime.
     stage-packages:
+      - libglu1-mesa
       - libopenal1
       - libpulse0
-      - libglu1-mesa
       - libgl1
 
     organize:
-      'ludo' : bin/
-      'cores' : data/cores/
-      'assets' : data/assets/
-      'database' : data/database/
+      ludo: bin/
+      cores: data/cores/
+      assets: data/assets/
+      database: data/database/
 
-  scripts:
+  wrapper:
+    source: .
     plugin: dump
-    source: scripts
-    organize:
-      environment: bin/environment
-      import-ludo-settings: bin/import-ludo-settings
+    filesets:
+      wrapper:
+        - wrapper
+
+    stage:
+      - $wrapper
