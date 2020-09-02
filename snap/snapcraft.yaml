@@ -1,22 +1,15 @@
-# Build snap from latest released assets on Github. When #108 is fixed switch
-# to building from source with same versions of cores as released in assets.
-# https://snapcraft.io/docs/snapcraft-yaml-reference
 name: ludo
 summary: A minimalist front-end for Libretro emulators
 description: |
   **Focus on playing**
-
-  Ludo's user interface is distraction free and configuration is always
-  optional.
-
-  Scan your games and browse your collection categorized by system with
-  playlists showing in-game screenshots.
-
-  A contextual menu gives you access to actions and quick save / quick load
-  anytime.
-
-  We chose the best emulators for the job, configured with sane defaults
-  guaranteeing a balance of speed and accuracy.
+  
+  Ludo's user interface is distraction free and configuration is always optional.
+  
+  Scan your games and browse your collection categorized by system with playlists showing in-game screenshots.
+  
+  A contextual menu gives you access to actions and quick save / quick load anytime.
+  
+  We chose the best emulators for the job, configured with sane defaults guaranteeing a balance of speed and accuracy.
 
 adopt-info: latest
 base: core18
@@ -82,6 +75,7 @@ parts:
       - libopenal1
       - libpulse0
       - libgl1
+      - libgl1-mesa-dri
 
     organize:
       ludo: bin/
