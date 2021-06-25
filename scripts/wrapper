@@ -3,6 +3,10 @@ function log {
     echo "$(date '+%Y/%m/%d %X') $*"
 }
 
+# Required for audio to work on Wayland, hooks into local pulse server.
+pulse_native="$XDG_RUNTIME_DIR/../pulse/native"
+test -S "$pulse_native" && export PULSE_SERVER="unix:${pulse_native}"
+
 # Change $HOME from numbered revision to symlinked current revision to prevent
 # settings from breaking on every update. When verbose logs is enabled show
 # snap information and disconnected interfaces.
