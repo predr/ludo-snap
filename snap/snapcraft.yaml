@@ -19,12 +19,6 @@ architectures:
   - build-on: amd64
   - build-on: arm64
 
-plugs:
-  config-ludo:
-    interface: personal-files
-    read:
-    - $HOME/.ludo
-
 apps:
   ludo:
     command: bin/wrapper ludo
@@ -42,7 +36,6 @@ apps:
       - audio-playback
       - joystick
       - removable-media
-      - config-ludo
       - home
 
 parts:
