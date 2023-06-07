@@ -18,8 +18,7 @@ case "$@" in
         log "[Snap]: Snap revision: $SNAP_REVISION"
         log "[Snap]: Platform arch: $SNAP_ARCH"
         for interface in desktop desktop-legacy wayland unity7 x11 opengl \
-            network network-bind audio-playback joystick removable-media \
-            config-ludo home; do
+            network network-bind audio-playback joystick removable-media home; do
             if ! snapctl is-connected $interface; then
                 log "[Snap]: Interface $interface is disconnected"
             fi
