@@ -12,10 +12,10 @@ description: |
   We chose the best emulators for the job, configured with sane defaults guaranteeing a balance of speed and accuracy.
 
 adopt-info: latest
-base: core18
+base: core22
 grade: stable
 confinement: strict
-architectures: 
+architectures:
   - build-on: amd64
   - build-on: arm64
 
@@ -23,7 +23,8 @@ apps:
   ludo:
     command: bin/wrapper ludo
     environment:
-      LIBGL_DRIVERS_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri
+      LIBGL_DRIVERS_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/dri
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio
     plugs:
       - desktop
       - desktop-legacy
@@ -42,21 +43,21 @@ parts:
   latest:
     plugin: nil
     override-build: |
-      snapcraftctl build
+      craftctl default
       URL="https://api.github.com/repos/libretro/ludo/releases/latest"
       VERSION=$(curl --silent "$URL" | jq --raw-output .tag_name | cut -c 2-)
-      snapcraftctl set-version "$VERSION"
-      case $SNAPCRAFT_ARCH_TRIPLET in
+      craftctl set version="$VERSION"
+      case $CRAFT_ARCH_TRIPLET in
         x86_64-linux-gnu)  ASSET="Ludo-Linux-x86_64-$VERSION.tar.gz";;
         aarch64-linux-gnu) ASSET="Ludo-Linux-arm-$VERSION.tar.gz";;
         *) echo "FATAL: UNKNOWN PLATFORM!"; exit 1;;
       esac
-      curl --silent --location --output "$SNAPCRAFT_PART_INSTALL/$ASSET" \
+      curl --silent --location --output "$CRAFT_PART_INSTALL/$ASSET" \
         "https://github.com/libretro/ludo/releases/download/v$VERSION/$ASSET"
       tar --extract --strip-components=1 \
-        --file="$SNAPCRAFT_PART_INSTALL/$ASSET" \
-        --directory="$SNAPCRAFT_PART_INSTALL"
-      rm -f "$SNAPCRAFT_PART_INSTALL/$ASSET"
+        --file="$CRAFT_PART_INSTALL/$ASSET" \
+        --directory="$CRAFT_PART_INSTALL"
+      rm -f "$CRAFT_PART_INSTALL/$ASSET"
 
     build-packages:
       - curl
