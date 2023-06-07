@@ -18,6 +18,7 @@ confinement: strict
 architectures:
   - build-on: amd64
   - build-on: arm64
+compression: lzo
 
 apps:
   ludo:
