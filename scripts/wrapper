@@ -26,27 +26,6 @@ case "$@" in
         ;;
 esac
 
-# Move files to new locations and update dir paths in settings.
-if test -d "$HOME"/.ludo && test ! -d "$HOME"/.local/share/ludo; then
-    log "Updating file locations..."
-    mkdir --parents "$HOME"/.local/share/ludo/
-    mkdir --parents "$HOME"/.config/ludo/
-    for f in "$HOME"/.ludo/*; do
-        if test -d "$f"; then
-            mv --no-clobber "$f" "$HOME"/.local/share/ludo/
-        else
-            if test "${f##*.}" == toml; then
-                mv --no-clobber "$f" "$HOME"/.config/ludo/
-            else
-                mv --no-clobber "$f" "$HOME"/.local/share/ludo/
-            fi
-        fi    
-    done
-    sed --in-place "s|$HOME/.ludo|$HOME/.local/share/ludo|g" \
-        "$HOME"/.config/ludo/settings.toml
-    rm --dir "$HOME"/.ludo
-fi
-
 # Set working dir to /data because assets, database and cores are searched in
 # current path unless edited in ./ludo/settings.toml.
 cd "$SNAP/data" || log "[Snap]: Failed to set working path"
