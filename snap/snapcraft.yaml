@@ -20,6 +20,10 @@ architectures:
   - build-on: arm64
 compression: lzo
 
+plugs:
+  shared-memory:
+    private: true
+
 apps:
   ludo:
     command: bin/wrapper ludo
@@ -39,6 +43,7 @@ apps:
       - joystick
       - removable-media
       - home
+      - shared-memory
 
 parts:
   latest:
