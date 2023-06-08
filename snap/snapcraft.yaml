@@ -73,6 +73,8 @@ parts:
       - libpulse0
       - libgl1
       - libgl1-mesa-dri
+      - libxcursor1
+      - libwayland-cursor0
 
     organize:
       ludo: bin/
