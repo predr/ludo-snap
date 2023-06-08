@@ -59,11 +59,13 @@ parts:
         --file="$CRAFT_PART_INSTALL/$ASSET" \
         --directory="$CRAFT_PART_INSTALL"
       rm -f "$CRAFT_PART_INSTALL/$ASSET"
+      execstack --clear-execstack "$CRAFT_PART_INSTALL"/cores/*
 
     build-packages:
       - curl
       - tar
       - jq
+      - execstack
 
     stage-packages:
       - libglu1-mesa
