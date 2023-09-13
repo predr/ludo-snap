@@ -26,7 +26,7 @@ plugs:
 
 apps:
   ludo:
-    command: bin/wrapper ludo
+    command: bin/wrapper
     common-id: com.libretro.ludo
     environment:
       LIBGL_DRIVERS_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/dri
@@ -54,18 +54,21 @@ parts:
       URL="https://api.github.com/repos/libretro/ludo/releases/latest"
       VERSION=$(curl --silent "$URL" | jq --raw-output .tag_name | cut -c 2-)
       craftctl set version="$VERSION"
-      case $CRAFT_ARCH_TRIPLET in
-        x86_64-linux-gnu)  ASSET="Ludo-Linux-x11-x86_64-$VERSION.tar.gz";;
-        aarch64-linux-gnu) ASSET="Ludo-Linux-x11-arm-$VERSION.tar.gz";;
-        *) echo "FATAL: UNKNOWN PLATFORM!"; exit 1;;
-      esac
-      curl --silent --location --output "$CRAFT_PART_INSTALL/$ASSET" \
-        "https://github.com/libretro/ludo/releases/download/v$VERSION/$ASSET"
-      tar --extract --strip-components=1 \
-        --file="$CRAFT_PART_INSTALL/$ASSET" \
-        --directory="$CRAFT_PART_INSTALL"
-      rm -f "$CRAFT_PART_INSTALL/$ASSET"
-      execstack --clear-execstack "$CRAFT_PART_INSTALL"/cores/*
+      for DISPLAY in wayland x11; do
+        case $CRAFT_ARCH_TRIPLET in
+          x86_64-linux-gnu)  ASSET="Ludo-Linux-$DISPLAY-x86_64-$VERSION.tar.gz";;
+          aarch64-linux-gnu) ASSET="Ludo-Linux-$DISPLAY-arm-$VERSION.tar.gz";;
+          *) echo "FATAL: UNKNOWN PLATFORM!"; exit 1;;
+        esac
+        curl --silent --location --output "$CRAFT_PART_INSTALL/$ASSET" \
+          "https://github.com/libretro/ludo/releases/download/v$VERSION/$ASSET"
+        tar --extract --strip-components=1 \
+          --file="$CRAFT_PART_INSTALL/$ASSET" \
+          --directory="$CRAFT_PART_INSTALL"
+        rm -f "$CRAFT_PART_INSTALL/$ASSET"s
+        mv "$CRAFT_PART_INSTALL"/ludo "$CRAFT_PART_INSTALL/ludo-$DISPLAY"
+      done
+      execstack --clear-execstack "$CRAFT_PART_INSTALL/cores/"*
 
     build-packages:
       - curl

@@ -17,6 +17,7 @@ case "$@" in
         log "[Snap]: Ludo version: $SNAP_VERSION"
         log "[Snap]: Snap revision: $SNAP_REVISION"
         log "[Snap]: Platform arch: $SNAP_ARCH"
+        log "[Snap]: Session type: $XDG_SESSION_TYPE"
         for interface in desktop desktop-legacy wayland unity7 x11 opengl \
             network network-bind audio-playback joystick removable-media home; do
             if ! snapctl is-connected $interface; then
@@ -30,5 +31,13 @@ esac
 # current path unless edited in ./ludo/settings.toml.
 cd "$SNAP/data" || log "[Snap]: Failed to set working path"
 
-# Execute snap command
-exec "$@"
+# Execute Wayland binary when $WAYLAND_DISPLAY is set and fallback to X11 for
+# everything else.
+case "${WAYLAND_DISPLAY:+wayland}" in
+    wayland)
+        exec "$SNAP"/ludo-wayland "$@"
+        ;;
+    *)
+        exec "$SNAP"/ludo-x11 "$@"
+        ;;
+esac
