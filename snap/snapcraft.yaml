@@ -27,6 +27,7 @@ plugs:
 apps:
   ludo:
     command: bin/wrapper ludo
+    common-id: com.libretro.ludo
     environment:
       LIBGL_DRIVERS_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/dri
       LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/pulseaudio
