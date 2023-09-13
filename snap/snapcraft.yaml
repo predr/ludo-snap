@@ -54,8 +54,8 @@ parts:
       VERSION=$(curl --silent "$URL" | jq --raw-output .tag_name | cut -c 2-)
       craftctl set version="$VERSION"
       case $CRAFT_ARCH_TRIPLET in
-        x86_64-linux-gnu)  ASSET="Ludo-Linux-x86_64-$VERSION.tar.gz";;
-        aarch64-linux-gnu) ASSET="Ludo-Linux-arm-$VERSION.tar.gz";;
+        x86_64-linux-gnu)  ASSET="Ludo-Linux-x11-x86_64-$VERSION.tar.gz";;
+        aarch64-linux-gnu) ASSET="Ludo-Linux-x11-arm-$VERSION.tar.gz";;
         *) echo "FATAL: UNKNOWN PLATFORM!"; exit 1;;
       esac
       curl --silent --location --output "$CRAFT_PART_INSTALL/$ASSET" \
