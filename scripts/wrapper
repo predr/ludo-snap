@@ -1,6 +1,6 @@
 #!/bin/bash
 function log {
-    echo "$(date '+%Y/%m/%d %X') $*"
+    echo "$(date '+%Y/%m/%d %X') [Snap]: $*"
 }
 
 # Required for audio to work on Wayland, hooks into local pulse server.
@@ -14,14 +14,14 @@ fi
 export HOME="${HOME//$SNAP_REVISION/current}"
 case "$@" in
     *-v*)
-        log "[Snap]: Ludo version: $SNAP_VERSION"
-        log "[Snap]: Snap revision: $SNAP_REVISION"
-        log "[Snap]: Platform arch: $SNAP_ARCH"
-        log "[Snap]: Session type: $XDG_SESSION_TYPE"
+        log "Ludo version: $SNAP_VERSION"
+        log "Snap revision: $SNAP_REVISION"
+        log "Platform arch: $SNAP_ARCH"
+        log "Session type: $XDG_SESSION_TYPE"
         for interface in desktop desktop-legacy wayland unity7 x11 opengl \
             network network-bind audio-playback joystick removable-media home; do
             if ! snapctl is-connected $interface; then
-                log "[Snap]: Interface $interface is disconnected"
+                log "Interface $interface is disconnected"
             fi
         done
         ;;
@@ -29,7 +29,7 @@ esac
 
 # Set working dir to /data because assets, database and cores are searched in
 # current path unless edited in ./ludo/settings.toml.
-cd "$SNAP/data" || log "[Snap]: Failed to set working path"
+cd "$SNAP/data" || log "Failed to set working path: $SNAP/data"
 
 # Execute Wayland binary when $WAYLAND_DISPLAY is set and fallback to X11 for
 # everything else.
