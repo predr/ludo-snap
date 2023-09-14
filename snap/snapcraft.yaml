@@ -65,7 +65,7 @@ parts:
         tar --extract --strip-components=1 \
           --file="$CRAFT_PART_INSTALL/$ASSET" \
           --directory="$CRAFT_PART_INSTALL"
-        rm -f "$CRAFT_PART_INSTALL/$ASSET"s
+        rm -f "$CRAFT_PART_INSTALL/$ASSET"
         mv "$CRAFT_PART_INSTALL"/ludo "$CRAFT_PART_INSTALL/ludo-$DISPLAY"
       done
       execstack --clear-execstack "$CRAFT_PART_INSTALL/cores/"*
