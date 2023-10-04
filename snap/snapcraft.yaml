@@ -84,6 +84,11 @@ parts:
       - libgl1-mesa-dri
       - libxcursor1
       - libwayland-cursor0
+      - libwayland-egl1
+      - libxkbcommon0
+      - libxrandr2
+      - libxinerama1
+      - libxi6
 
     organize:
       ludo: bin/
